@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <Version>1.0.1</Version>
         <TargetFramework>net5-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -46,7 +47,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.7" />
+        <PackageReference Include="DalamudPackager" Version="2.1.7"/>
     </ItemGroup>
 
 </Project>
