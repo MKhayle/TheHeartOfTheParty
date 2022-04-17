@@ -138,7 +138,7 @@ internal class PluginUi : IDisposable {
             SortOrder.Default => titles.OrderBy(t => t.Row.Order),
             SortOrder.Alphabetical => titles.OrderBy(t => t.Text.RawString),
             SortOrder.Achievement => titles.OrderBy(t => t.Achievement?.Name?.RawString ?? "???"),
-            SortOrder.Category => titles.OrderBy(t => t.Achievement?.AchievementCategory.Value?.Name?.RawString ?? "???"),
+            SortOrder.Category => titles.OrderBy(t => t.Achievement?.AchievementCategory.Value?.AchievementKind.Value?.Name?.RawString ?? "???"),
             _ => titles,
         };
 
