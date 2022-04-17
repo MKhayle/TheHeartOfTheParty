@@ -7,11 +7,21 @@ namespace TheHeartOfTheParty;
 internal class PluginUi : IDisposable {
     private Plugin Plugin { get; }
 
+    private Dictionary<uint, Achievement> Achievements { get; } = new();
+
     private bool _visible;
     private string _searchText = string.Empty;
 
     internal PluginUi(Plugin plugin) {
         this.Plugin = plugin;
+
+        foreach (var achievement in this.Plugin.DataManager.GetExcelSheet<Achievement>()!) {
+            if (achievement.Title.Row == 0) {
+                continue;
+            }
+
+            this.Achievements[achievement.Title.Row] = achievement;
+        }
 
         this.Plugin.Interface.UiBuilder.Draw += this.OnDraw;
     }
@@ -66,14 +76,35 @@ internal class PluginUi : IDisposable {
         ImGui.InputTextWithHint("##search", hint, ref this._searchText, 64);
 
         if (ImGui.BeginChild("##titles")) {
-            foreach (var title in titles) {
-                if (title.Unlocked) {
-                    if (ImGui.Selectable(title.Text)) {
-                        this.Plugin.Functions.SetTitle(title.Row.RowId);
+            if (ImGui.BeginTable("##titles-table", 3)) {
+                ImGui.TableSetupColumn("Title", ImGuiTableColumnFlags.WidthFixed);
+                ImGui.TableSetupColumn("Achievement", ImGuiTableColumnFlags.WidthFixed);
+                ImGui.TableSetupColumn("Category", ImGuiTableColumnFlags.WidthStretch);
+
+                ImGui.TableHeadersRow();
+
+                foreach (var title in titles) {
+                    ImGui.TableNextRow();
+
+                    if (title.Unlocked) {
+                        const ImGuiSelectableFlags flags = ImGuiSelectableFlags.SpanAllColumns
+                                                           | ImGuiSelectableFlags.AllowItemOverlap;
+                        // TODO: detect current title?
+                        if (ImGui.Selectable(title.Text, false, flags)) {
+                            this.Plugin.Functions.SetTitle(title.Row.RowId);
+                        }
+                    } else {
+                        ImGui.TextDisabled(title.Text);
                     }
-                } else {
-                    ImGui.TextDisabled(title.Text);
+
+                    ImGui.TableNextColumn();
+                    ImGui.TextUnformatted(title.Achievement?.Name?.RawString ?? "???");
+
+                    ImGui.TableNextColumn();
+                    ImGui.TextUnformatted(title.Achievement?.AchievementCategory.Value?.Name?.RawString ?? "???");
                 }
+
+                ImGui.EndTable();
             }
 
             ImGui.EndChild();
@@ -89,6 +120,7 @@ internal class PluginUi : IDisposable {
                 Row = row,
                 Unlocked = this.Plugin.Functions.IsTitleUnlocked(row.RowId),
                 Text = fem ? row.Feminine : row.Masculine,
+                Achievement = this.Achievements.TryGetValue(row.RowId, out var achievement) ? achievement : null,
             });
 
         if (this.Plugin.Config.OnlyUnlocked) {
@@ -103,6 +135,8 @@ internal class PluginUi : IDisposable {
         titles = this.Plugin.Config.SortOrder switch {
             SortOrder.Default => titles.OrderBy(t => t.Row.Order),
             SortOrder.Alphabetical => titles.OrderBy(t => t.Text.RawString),
+            SortOrder.Achievement => titles.OrderBy(t => t.Achievement?.Name?.RawString ?? "???"),
+            SortOrder.Category => titles.OrderBy(t => t.Achievement?.AchievementCategory.Value?.Name?.RawString ?? "???"),
             _ => titles,
         };
 
@@ -114,4 +148,5 @@ internal class TitleInfo {
     internal Title Row { get; init; } = null!;
     internal bool Unlocked { get; init; }
     internal SeString Text { get; init; } = null!;
+    internal Achievement? Achievement { get; init; }
 }

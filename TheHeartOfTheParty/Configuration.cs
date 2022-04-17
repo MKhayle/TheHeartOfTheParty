@@ -12,4 +12,6 @@ internal class Configuration : IPluginConfiguration {
 internal enum SortOrder {
     Default,
     Alphabetical,
+    Achievement,
+    Category,
 }
