@@ -60,7 +60,7 @@ internal class PluginUi : IDisposable {
 
         var titles = this.GetTitles(fem).ToList();
 
-        var hint = titles.Count == 1 ? "Search 1 title..." : $"Search {titles} titles...";
+        var hint = titles.Count == 1 ? "Search 1 title..." : $"Search {titles.Count} titles...";
 
         ImGui.SetNextItemWidth(-1);
         ImGui.InputTextWithHint("##search", hint, ref this._searchText, 64);
