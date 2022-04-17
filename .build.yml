@@ -1,6 +1,7 @@
 image: fedora/latest
 packages:
   - dotnet
+  - dotnet-sdk-5.0
   - wget
   - unzip
   - zip
