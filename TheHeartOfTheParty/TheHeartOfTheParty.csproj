@@ -10,7 +10,10 @@
 
     <PropertyGroup>
         <Dalamud>$(AppData)\XIVLauncher\addon\Hooks\dev</Dalamud>
-<!--        <Dalamud>$(DALAMUD_HOME)</Dalamud>-->
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'">
+        <Dalamud>$(DALAMUD_HOME)</Dalamud>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(IsCI)' == 'true'">
