@@ -80,11 +80,13 @@ internal class PluginUi : IDisposable {
                 ImGui.TableSetupColumn("Title", ImGuiTableColumnFlags.WidthFixed);
                 ImGui.TableSetupColumn("Achievement", ImGuiTableColumnFlags.WidthFixed);
                 ImGui.TableSetupColumn("Category", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupScrollFreeze(0, 1);
 
                 ImGui.TableHeadersRow();
 
                 foreach (var title in titles) {
                     ImGui.TableNextRow();
+                    ImGui.TableNextColumn();
 
                     if (title.Unlocked) {
                         const ImGuiSelectableFlags flags = ImGuiSelectableFlags.SpanAllColumns
@@ -101,7 +103,7 @@ internal class PluginUi : IDisposable {
                     ImGui.TextUnformatted(title.Achievement?.Name?.RawString ?? "???");
 
                     ImGui.TableNextColumn();
-                    ImGui.TextUnformatted(title.Achievement?.AchievementCategory.Value?.Name?.RawString ?? "???");
+                    ImGui.TextUnformatted(title.Achievement?.AchievementCategory.Value?.AchievementKind.Value?.Name?.RawString ?? "???");
                 }
 
                 ImGui.EndTable();
