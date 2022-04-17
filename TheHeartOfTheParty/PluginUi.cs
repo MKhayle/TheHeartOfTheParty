@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using System.Numerics;
+using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 using Lumina.Text;
 
@@ -39,6 +40,8 @@ internal class PluginUi : IDisposable {
             return;
         }
 
+        ImGui.SetNextWindowSize(new Vector2(780, 450), ImGuiCond.FirstUseEver);
+
         if (!ImGui.Begin(this.Plugin.Name, ref this._visible)) {
             ImGui.End();
             return;
@@ -75,41 +78,37 @@ internal class PluginUi : IDisposable {
         ImGui.SetNextItemWidth(-1);
         ImGui.InputTextWithHint("##search", hint, ref this._searchText, 64);
 
-        if (ImGui.BeginChild("##titles")) {
-            if (ImGui.BeginTable("##titles-table", 3)) {
-                ImGui.TableSetupColumn("Title", ImGuiTableColumnFlags.WidthFixed);
-                ImGui.TableSetupColumn("Achievement", ImGuiTableColumnFlags.WidthFixed);
-                ImGui.TableSetupColumn("Category", ImGuiTableColumnFlags.WidthStretch);
-                ImGui.TableSetupScrollFreeze(0, 1);
+        if (ImGui.BeginTable("##titles-table", 3, ImGuiTableFlags.ScrollY, ImGui.GetContentRegionAvail())) {
+            ImGui.TableSetupColumn("Title", ImGuiTableColumnFlags.WidthFixed);
+            ImGui.TableSetupColumn("Achievement", ImGuiTableColumnFlags.WidthFixed);
+            ImGui.TableSetupColumn("Category", ImGuiTableColumnFlags.WidthStretch);
+            ImGui.TableSetupScrollFreeze(0, 1);
 
-                ImGui.TableHeadersRow();
+            ImGui.TableHeadersRow();
 
-                foreach (var title in titles) {
-                    ImGui.TableNextRow();
-                    ImGui.TableNextColumn();
+            foreach (var title in titles) {
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
 
-                    if (title.Unlocked) {
-                        const ImGuiSelectableFlags flags = ImGuiSelectableFlags.SpanAllColumns
-                                                           | ImGuiSelectableFlags.AllowItemOverlap;
-                        // TODO: detect current title?
-                        if (ImGui.Selectable(title.Text, false, flags)) {
-                            this.Plugin.Functions.SetTitle(title.Row.RowId);
-                        }
-                    } else {
-                        ImGui.TextDisabled(title.Text);
+                if (title.Unlocked) {
+                    const ImGuiSelectableFlags flags = ImGuiSelectableFlags.SpanAllColumns
+                                                       | ImGuiSelectableFlags.AllowItemOverlap;
+                    // TODO: detect current title?
+                    if (ImGui.Selectable(title.Text, false, flags)) {
+                        this.Plugin.Functions.SetTitle(title.Row.RowId);
                     }
-
-                    ImGui.TableNextColumn();
-                    ImGui.TextUnformatted(title.Achievement?.Name?.RawString ?? "???");
-
-                    ImGui.TableNextColumn();
-                    ImGui.TextUnformatted(title.Achievement?.AchievementCategory.Value?.AchievementKind.Value?.Name?.RawString ?? "???");
+                } else {
+                    ImGui.TextDisabled(title.Text);
                 }
 
-                ImGui.EndTable();
+                ImGui.TableNextColumn();
+                ImGui.TextUnformatted(title.Achievement?.Name?.RawString ?? "???");
+
+                ImGui.TableNextColumn();
+                ImGui.TextUnformatted(title.Achievement?.AchievementCategory.Value?.AchievementKind.Value?.Name?.RawString ?? "???");
             }
 
-            ImGui.EndChild();
+            ImGui.EndTable();
         }
 
         ImGui.End();

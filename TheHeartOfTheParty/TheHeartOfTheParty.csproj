@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <PropertyGroup>
-<!--        <Dalamud>$(AppData)\XIVLauncher\addon\Hooks\dev</Dalamud>-->
-        <Dalamud>/home/ascclemens/dalamud</Dalamud>
+        <Dalamud>$(AppData)\XIVLauncher\addon\Hooks\dev</Dalamud>
+<!--        <Dalamud>$(DALAMUD_HOME)</Dalamud>-->
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(IsCI)' == 'true'">
