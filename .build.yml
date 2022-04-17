@@ -16,8 +16,8 @@ tasks:
       cd TheHeartOfTheParty/TheHeartOfTheParty
       dotnet build -c Release -p:IsCI=true
   - package: |
-      cd TheHeartOfTheParty/TheHeartOfTheParty/bin/Release/net5.0-windows
+      cd TheHeartOfTheParty/TheHeartOfTheParty/bin/Release/net5-windows
       zip -r release.zip TheHeartOfTheParty
 artifacts:
-  - TheHeartOfTheParty/TheHeartOfTheParty/bin/Release/net5.0-windows/TheHeartOfTheParty/latest.zip
-  - TheHeartOfTheParty/TheHeartOfTheParty/bin/Release/net5.0-windows/release.zip
+  - TheHeartOfTheParty/TheHeartOfTheParty/bin/Release/net5-windows/TheHeartOfTheParty/latest.zip
+  - TheHeartOfTheParty/TheHeartOfTheParty/bin/Release/net5-windows/release.zip
