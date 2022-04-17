@@ -12,11 +12,22 @@ internal unsafe class GameFunctions {
     [Signature("E8 ?? ?? ?? ?? 83 7B 44 02")]
     private readonly delegate* unmanaged<AgentInterface*, uint*, byte> _setTitle;
 
+    [Signature("E8 ?? ?? ?? ?? 89 6E 58")]
+    private readonly delegate* unmanaged<IntPtr, void> _requestTitles;
+
     [Signature("48 8D 0D ?? ?? ?? ?? BD ?? ?? ?? ?? E8 ?? ?? ?? ?? 84 C0 75", ScanType = ScanType.StaticAddress)]
     private readonly IntPtr _titleList;
 
     internal GameFunctions(Plugin plugin) {
         SignatureHelper.Initialise(this);
+    }
+
+    internal void RequestTitles() {
+        if (*(byte*) (this._titleList + 0x61) == 1) {
+            return;
+        }
+
+        this._requestTitles(this._titleList);
     }
 
     internal bool IsTitleUnlocked(uint titleId) {
@@ -32,7 +43,7 @@ internal unsafe class GameFunctions {
         if (agent == null) {
             return false;
         }
-        
+
         return this._setTitle(agent, &titleId) != 0;
     }
 }

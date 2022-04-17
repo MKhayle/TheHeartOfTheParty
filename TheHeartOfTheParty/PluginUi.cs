@@ -47,6 +47,10 @@ internal class PluginUi : IDisposable {
             return;
         }
 
+        if (ImGui.IsWindowAppearing()) {
+            this.Plugin.Functions.RequestTitles();
+        }
+
         var anyChanged = false;
 
         anyChanged |= ImGui.Checkbox("Only show unlocked titles", ref this.Plugin.Config.OnlyUnlocked);
