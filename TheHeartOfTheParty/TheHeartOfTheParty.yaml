@@ -6,3 +6,4 @@ description: |-
   supports searching. Note that it doesn't add a command to set your title; use
   the built-in /title command instead.
 repo_url: https://git.annaclemens.io/ascclemens/TheHeartOfTheParty
+dalamud_api_level: 7
