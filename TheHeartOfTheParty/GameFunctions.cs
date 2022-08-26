@@ -18,7 +18,10 @@ internal unsafe class GameFunctions {
     [Signature("48 8D 0D ?? ?? ?? ?? BD ?? ?? ?? ?? E8 ?? ?? ?? ?? 84 C0 75", ScanType = ScanType.StaticAddress)]
     private readonly IntPtr _titleList;
 
-    internal GameFunctions(Plugin plugin) {
+    [Signature("BA ?? ?? ?? ?? E8 ?? ?? ?? ?? 41 8B 4D 08", Offset = 1)]
+    private uint _agentId;
+
+    internal GameFunctions() {
         SignatureHelper.Initialise(this);
     }
 
@@ -39,7 +42,7 @@ internal unsafe class GameFunctions {
     }
 
     internal bool SetTitle(uint titleId) {
-        var agent = Framework.Instance()->GetUiModule()->GetAgentModule()->GetAgentByInternalId((AgentId) 200);
+        var agent = Framework.Instance()->GetUiModule()->GetAgentModule()->GetAgentByInternalId((AgentId) this._agentId);
         if (agent == null) {
             return false;
         }

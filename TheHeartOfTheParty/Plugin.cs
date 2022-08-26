@@ -29,7 +29,7 @@ public class Plugin : IDalamudPlugin {
     public Plugin() {
         this.Config = this.Interface!.GetPluginConfig() as Configuration ?? new Configuration();
 
-        this.Functions = new GameFunctions(this);
+        this.Functions = new GameFunctions();
         this.Ui = new PluginUi(this);
         this.Commands = new Commands(this);
     }
