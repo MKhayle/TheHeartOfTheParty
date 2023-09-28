@@ -42,7 +42,7 @@ internal class PluginUi : IDisposable {
 
         ImGui.SetNextWindowSize(new Vector2(780, 450), ImGuiCond.FirstUseEver);
 
-        if (!ImGui.Begin(this.Plugin.Name, ref this._visible)) {
+        if (!ImGui.Begin(Plugin.Name, ref this._visible)) {
             ImGui.End();
             return;
         }

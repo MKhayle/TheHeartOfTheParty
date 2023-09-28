@@ -1,25 +1,26 @@
-﻿using Dalamud.Data;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.Command;
-using Dalamud.IoC;
+﻿using Dalamud.IoC;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 
 namespace TheHeartOfTheParty;
 
 public class Plugin : IDalamudPlugin {
-    public string Name => "The Heart of the Party";
+    internal static string Name => "The Heart of the Party";
+
+    [PluginService]
+    internal static IGameInteropProvider GameInteropProvider { get; private set; }
 
     [PluginService]
     internal DalamudPluginInterface Interface { get; init; }
 
     [PluginService]
-    internal ClientState ClientState { get; init; }
+    internal IClientState ClientState { get; init; }
 
     [PluginService]
-    internal CommandManager CommandManager { get; init; }
+    internal ICommandManager CommandManager { get; init; }
 
     [PluginService]
-    internal DataManager DataManager { get; init; }
+    internal IDataManager DataManager { get; init; }
 
     internal Configuration Config { get; }
     internal GameFunctions Functions { get; }

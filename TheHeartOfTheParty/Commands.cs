@@ -15,7 +15,7 @@ internal class Commands : IDisposable {
 
         foreach (var name in CommandNames) {
             this.Plugin.CommandManager.AddHandler(name, new CommandInfo(this.OnCommand) {
-                HelpMessage = $"Toggles {this.Plugin.Name}",
+                HelpMessage = $"Toggles {Plugin.Name}",
             });
         }
     }

@@ -22,7 +22,7 @@ internal unsafe class GameFunctions {
     private uint _agentId;
 
     internal GameFunctions() {
-        SignatureHelper.Initialise(this);
+        Plugin.GameInteropProvider.InitializeFromAttributes(this);
     }
 
     internal void RequestTitles() {

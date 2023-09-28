@@ -1,8 +1,8 @@
 name: The Heart of the Party
-author: ascclemens
+author: Anna
 punchline: Set your character's title - now with Searchalin!
 description: |-
   The Heart of the Party is a remake of the in-game title picker, but it
   supports searching. Note that it doesn't add a command to set your title; use
   the built-in /title command instead.
-repo_url: https://git.annaclemens.io/ascclemens/TheHeartOfTheParty
+repo_url: https://git.anna.lgbt/anna/TheHeartOfTheParty
