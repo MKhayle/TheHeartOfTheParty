@@ -1,4 +1,5 @@
 ﻿using Dalamud.Utility.Signatures;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Component.GUI;
@@ -6,16 +7,13 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 namespace TheHeartOfTheParty;
 
 internal unsafe class GameFunctions {
-    [Signature("B8 ?? ?? ?? ?? 44 0F B7 C2 4C 8B C9")]
-    private readonly delegate* unmanaged<IntPtr, ushort, byte> _isTitleUnlocked;
-
-    [Signature("E8 ?? ?? ?? ?? 83 7B 44 02")]
+    [Signature("E8 ?? ?? ?? ?? 89 7B 44 EB 05")]
     private readonly delegate* unmanaged<AgentInterface*, uint*, byte> _setTitle;
 
-    [Signature("E8 ?? ?? ?? ?? 89 6E 58")]
+    [Signature("40 53 48 83 EC 30 80 79 6A 00")]
     private readonly delegate* unmanaged<IntPtr, void> _requestTitles;
 
-    [Signature("48 8D 0D ?? ?? ?? ?? BD ?? ?? ?? ?? E8 ?? ?? ?? ?? 84 C0 75", ScanType = ScanType.StaticAddress)]
+    [Signature("48 8D 0D ?? ?? ?? ?? E8 ?? ?? ?? ?? 89 6E 58 B8", ScanType = ScanType.StaticAddress)]
     private readonly IntPtr _titleList;
 
     [Signature("BA ?? ?? ?? ?? E8 ?? ?? ?? ?? 41 8B 4D 08", Offset = 1)]
@@ -38,7 +36,7 @@ internal unsafe class GameFunctions {
             return false;
         }
 
-        return this._isTitleUnlocked(this._titleList, (ushort) titleId) != 0;
+        return ((TitleList*) this._titleList)->IsTitleUnlocked((ushort) titleId);
     }
 
     internal bool SetTitle(uint titleId) {
