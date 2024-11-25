@@ -2,15 +2,16 @@
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using FFXIVClientStructs.FFXIV.Client.UI.Misc;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using Lumina.Excel.Sheets;
 using static FFXIVClientStructs.FFXIV.Component.GUI.AtkEventDispatcher;
 
 namespace TheHeartOfTheParty;
 
 internal unsafe class GameFunctions {
-    [Signature("E8 ?? ?? ?? ?? 89 7B 44 EB 05")]
-    private readonly delegate* unmanaged<AgentInterface*, uint*, byte> _setTitle;
 
     internal GameFunctions() {
         Plugin.GameInteropProvider.InitializeFromAttributes(this);
@@ -34,13 +35,14 @@ internal unsafe class GameFunctions {
         return UIState.Instance()->TitleList.IsTitleUnlocked((ushort)titleId);
     }
 
-    internal bool SetTitle(uint titleId)
+    internal void SetTitle(uint titleId, string title)
     {
-        var agent = Framework.Instance()->GetUIModule()->GetAgentModule()->GetAgentByInternalId(AgentId.CharacterTitle);
-        if (agent == null) {
-            return false;
+        if (titleId != 0)
+        {
+            using var titleStr = new Utf8String(title);
+              RaptureLogModule.Instance()->ShowLogMessageString(3846u, &titleStr);
         }
 
-        return this._setTitle(agent, &titleId) != 0;
+        UIState.Instance()->TitleController.SendTitleIdUpdate((ushort)titleId);
     }
 }
