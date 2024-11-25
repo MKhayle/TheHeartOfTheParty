@@ -97,12 +97,13 @@ internal class PluginUi : IDisposable {
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
 
+
                 if (title.Unlocked) {
                     const ImGuiSelectableFlags flags = ImGuiSelectableFlags.SpanAllColumns
                                                        | ImGuiSelectableFlags.AllowItemOverlap;
                     // TODO: detect current title?
                     if (ImGui.Selectable(title.Text.ExtractText(), false, flags)) {
-                        this.Plugin.Functions.SetTitle(title.Row.RowId);
+                        this.Plugin.Functions.SetTitle(title.Row.RowId, title.Text.ExtractText());
                     }
                 } else {
                     ImGui.TextDisabled(title.Text.ExtractText());
