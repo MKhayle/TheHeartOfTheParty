@@ -1,7 +1,10 @@
 ﻿using System.Numerics;
+using Dalamud.Utility;
 using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
+using Lumina.Extensions;
 using Lumina.Text;
+using Lumina.Text.ReadOnly;
 
 namespace TheHeartOfTheParty;
 
@@ -17,11 +20,11 @@ internal class PluginUi : IDisposable {
         this.Plugin = plugin;
 
         foreach (var achievement in this.Plugin.DataManager.GetExcelSheet<Achievement>()!) {
-            if (achievement.Title.Row == 0) {
+            if (achievement.Title.RowId == 0) {
                 continue;
             }
 
-            this.Achievements[achievement.Title.Row] = achievement;
+            this.Achievements[achievement.Title.RowId] = achievement;
         }
 
         this.Plugin.Interface.UiBuilder.Draw += this.OnDraw;
@@ -98,18 +101,18 @@ internal class PluginUi : IDisposable {
                     const ImGuiSelectableFlags flags = ImGuiSelectableFlags.SpanAllColumns
                                                        | ImGuiSelectableFlags.AllowItemOverlap;
                     // TODO: detect current title?
-                    if (ImGui.Selectable(title.Text, false, flags)) {
+                    if (ImGui.Selectable(title.Text.ExtractText(), false, flags)) {
                         this.Plugin.Functions.SetTitle(title.Row.RowId);
                     }
                 } else {
-                    ImGui.TextDisabled(title.Text);
+                    ImGui.TextDisabled(title.Text.ExtractText());
                 }
 
                 ImGui.TableNextColumn();
-                ImGui.TextUnformatted(title.Achievement?.Name?.RawString ?? "???");
+                ImGui.TextUnformatted(title.Achievement?.Name.ExtractText() ?? "???");
 
                 ImGui.TableNextColumn();
-                ImGui.TextUnformatted(title.Achievement?.AchievementCategory.Value?.AchievementKind.Value?.Name?.RawString ?? "???");
+                ImGui.TextUnformatted(title.Achievement?.AchievementCategory.Value.AchievementKind.Value.Name.ExtractText() ?? "???");
             }
 
             ImGui.EndTable();
@@ -134,14 +137,14 @@ internal class PluginUi : IDisposable {
 
         if (this._searchText.Length > 0) {
             var search = this._searchText.ToLowerInvariant();
-            titles = titles.Where(t => t.Text.RawString.ToLowerInvariant().Contains(search));
+            titles = titles.Where(t => t.Text.ExtractText().ToLowerInvariant().Contains(search));
         }
 
         titles = this.Plugin.Config.SortOrder switch {
             SortOrder.Default => titles.OrderBy(t => t.Row.Order),
-            SortOrder.Alphabetical => titles.OrderBy(t => t.Text.RawString),
-            SortOrder.Achievement => titles.OrderBy(t => t.Achievement?.Name?.RawString ?? "???"),
-            SortOrder.Category => titles.OrderBy(t => t.Achievement?.AchievementCategory.Value?.AchievementKind.Value?.Name?.RawString ?? "???"),
+            SortOrder.Alphabetical => titles.OrderBy(t => t.Text.ExtractText()),
+            SortOrder.Achievement => titles.OrderBy(t => t.Achievement?.Name.ExtractText() ?? "???"),
+            SortOrder.Category => titles.OrderBy(t => t.Achievement?.AchievementCategory.Value.AchievementKind.Value.Name.ExtractText() ?? "???"),
             _ => titles,
         };
 
@@ -150,8 +153,8 @@ internal class PluginUi : IDisposable {
 }
 
 internal class TitleInfo {
-    internal Title Row { get; init; } = null!;
+    internal Title Row { get; init; }
     internal bool Unlocked { get; init; }
-    internal SeString Text { get; init; } = null!;
+    internal ReadOnlySeString Text { get; init; }
     internal Achievement? Achievement { get; init; }
 }

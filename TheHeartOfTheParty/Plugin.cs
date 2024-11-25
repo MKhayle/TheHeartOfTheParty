@@ -11,7 +11,7 @@ public class Plugin : IDalamudPlugin {
     internal static IGameInteropProvider GameInteropProvider { get; private set; }
 
     [PluginService]
-    internal DalamudPluginInterface Interface { get; init; }
+    internal IDalamudPluginInterface Interface { get; init; }
 
     [PluginService]
     internal IClientState ClientState { get; init; }

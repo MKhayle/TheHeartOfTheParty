@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Dalamud.NET.Sdk/11.0.0">
 
     <PropertyGroup>
-        <Version>1.0.5</Version>
-        <TargetFramework>net7-windows</TargetFramework>
+        <Version>1.0.7</Version>
+        <TargetFramework>net8-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -45,10 +45,6 @@
             <HintPath>$(DalamudLibPath)\Lumina.Excel.dll</HintPath>
             <Private>false</Private>
         </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.12" />
     </ItemGroup>
 
 </Project>
