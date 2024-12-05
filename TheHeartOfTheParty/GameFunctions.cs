@@ -1,13 +1,6 @@
-﻿using Dalamud.Utility.Signatures;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
+﻿using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using FFXIVClientStructs.FFXIV.Client.System.String;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Misc;
-using FFXIVClientStructs.FFXIV.Component.GUI;
-using Lumina.Excel.Sheets;
-using static FFXIVClientStructs.FFXIV.Component.GUI.AtkEventDispatcher;
 
 namespace TheHeartOfTheParty;
 
@@ -19,7 +12,7 @@ internal unsafe class GameFunctions {
 
     internal void RequestTitles() {
         var titleList = UIState.Instance()->TitleList;
-        if (titleList.DataPending) { 
+        if (titleList.DataPending) {
             return;
         }
 

@@ -1,9 +1,6 @@
 ﻿using System.Numerics;
-using Dalamud.Utility;
 using ImGuiNET;
 using Lumina.Excel.Sheets;
-using Lumina.Extensions;
-using Lumina.Text;
 using Lumina.Text.ReadOnly;
 
 namespace TheHeartOfTheParty;
