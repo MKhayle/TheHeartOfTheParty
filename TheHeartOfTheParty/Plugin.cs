@@ -35,7 +35,8 @@ public class Plugin : IDalamudPlugin {
         this.Commands = new Commands(this);
     }
 
-    public void Dispose() {
+
+	public void Dispose() {
         this.Commands.Dispose();
         this.Ui.Dispose();
     }

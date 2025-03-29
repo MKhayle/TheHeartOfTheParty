@@ -25,11 +25,13 @@ internal class PluginUi : IDisposable {
         }
 
         this.Plugin.Interface.UiBuilder.Draw += this.OnDraw;
-    }
+		this.Plugin.Interface.UiBuilder.OpenMainUi += this.Toggle;
+	}
 
     public void Dispose() {
         this.Plugin.Interface.UiBuilder.Draw -= this.OnDraw;
-    }
+		this.Plugin.Interface.UiBuilder.OpenMainUi -= this.Toggle;
+	}
 
     internal void Toggle() {
         this._visible ^= true;
