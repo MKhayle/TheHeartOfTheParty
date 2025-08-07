@@ -7,4 +7,4 @@ description: |-
   the built-in /title command instead.
 repo_url: https://git.anna.lgbt/anna/TheHeartOfTheParty
 tags: ["titles"]
-changelog: API12 update. Added a Main UI callback so it can be used with Wotsit!
+changelog: API13 update.
